@@ -234,7 +234,7 @@
 
             <div class="field">
               <label for="fp"><span class="symbol">f_p</span> Fraction of stars with planets
-                <input type="number" id="fp" min="0" max="1" step="0.01" value="0.5" aria-describedby="hint-fp" />
+                <input type="number" id="fp" min="0" max="1" step="0.01" value="0.9" aria-describedby="hint-fp" />
               </label>
               <p id="hint-fp" class="hint">Proportion of stars that have planetary systems (0–1).</p>
             </div>
@@ -248,16 +248,16 @@
 
             <div class="field">
               <label for="ne"><span class="symbol">n_e</span> Habitable planets per system
-                <input type="number" id="ne" min="0" step="0.01" value="0.2" aria-describedby="hint-ne" />
+                <input type="number" id="ne" min="0" step="0.01" value="0.5" aria-describedby="hint-ne" />
               </label>
-              <p id="hint-ne" class="hint">Average number of potentially habitable planets per star with planets.</p>
+              <p id="hint-ne" class="hint">Average number of potentially habitable planets per stars habitable zone.</p>
             </div>
 
             <div class="field">
               <label for="fgc"><span class="symbol">f_gc</span> Fraction near galactic core
-                <input type="number" id="fgc" min="0" max="1" step="0.01" value="0.1" aria-describedby="hint-fgc" />
+                <input type="number" id="fgc" min="0" max="1" step="0.01" value="0.2" aria-describedby="hint-fgc" />
               </label>
-              <p id="hint-fgc" class="hint">Proportion of stellar systems close to the galactic core (0–1). Higher values reduce N; the model uses (1 - f_gc) because proximity to the core is detrimental.</p>
+              <p id="hint-fgc" class="hint">Proportion of stellar systems close to the galactic core (0–1). Higher values reduce N; because proximity to the core is detrimental.</p>
             </div>
 
             <div class="field">
@@ -276,7 +276,7 @@
 
             <div class="field">
               <label for="fi"><span class="symbol">f_i</span> Fraction with intelligent life
-                <input type="number" id="fi" min="0" max="1" step="0.001" value="0.01" aria-describedby="hint-fi" />
+                <input type="number" id="fi" min="0" max="1" step="0.001" value="0.05" aria-describedby="hint-fi" />
               </label>
               <p id="hint-fi" class="hint">Proportion of life-bearing planets that develop intelligent life (0–1).</p>
             </div>
