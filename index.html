@@ -214,7 +214,7 @@
       <section class="card" aria-labelledby="eq-title">
         <div class="grid">
           <div class="equation" id="eq-title" aria-live="polite">
-            N = R* × f_p × f_hz × n_e × (1 - f_gc) × f_t × f_l × f_i × f_c × L
+            N = R* × (1 - f_bin) × f_p × f_hz × n_e × (1 - f_gc) × f_t × f_l × f_i × f_c × L
           </div>
 
           <div class="row">
@@ -223,6 +223,13 @@
                 <input type="number" id="rstar" min="0" step="0.1" value="1.5" aria-describedby="hint-rstar" />
               </label>
               <p id="hint-rstar" class="hint">Average rate of star formation in the Milky Way.</p>
+            </div>
+
+            <div class="field">
+              <label for="fbin"><span class="symbol">f_bin</span> Fraction of new stars that are binary
+                <input type="number" id="fbin" min="0" max="1" step="0.01" value="0.55" aria-describedby="hint-fbin" />
+              </label>
+              <p id="hint-fbin" class="hint">Estimated fraction of newly formed stars that are binary (0–1). Higher values reduce N; the model uses (1 - f_bin) because close binaries can hinder stable, life-supporting planetary systems.</p>
             </div>
 
             <div class="field">
@@ -310,7 +317,7 @@
   <script>
     (function() {
       const $ = (id) => document.getElementById(id);
-      const fields = ['rstar','fp','fhz','ne','fgc','ft','fl','fi','fc','L'];
+      const fields = ['rstar','fbin','fp','fhz','ne','fgc','ft','fl','fi','fc','L'];
 
       function clamp(value, min, max) {
         if (Number.isNaN(value)) return 0;
@@ -332,6 +339,7 @@
           case 'ft':
           case 'fhz':
           case 'fgc':
+          case 'fbin':
             return clamp(raw, 0, 1);
           case 'ne': return clamp(raw, 0, undefined);
           default: return 0;
@@ -348,12 +356,13 @@
       }
 
       function updateEquationText() {
-        const eq = `N = ${parseVal('rstar')} × ${parseVal('fp')} × ${parseVal('fhz')} × ${parseVal('ne')} × ${(1 - parseVal('fgc')).toFixed(2)} × ${parseVal('ft')} × ${parseVal('fl')} × ${parseVal('fi')} × ${parseVal('fc')} × ${parseVal('L')}`;
+        const eq = `N = ${parseVal('rstar')} × ${(1 - parseVal('fbin')).toFixed(2)} × ${parseVal('fp')} × ${parseVal('fhz')} × ${parseVal('ne')} × ${(1 - parseVal('fgc')).toFixed(2)} × ${parseVal('ft')} × ${parseVal('fl')} × ${parseVal('fi')} × ${parseVal('fc')} × ${parseVal('L')}`;
         document.querySelector('.equation').textContent = eq;
       }
 
       function compute() {
         const rstar = parseVal('rstar');
+        const fbin_effect = 1 - parseVal('fbin');
         const fp = parseVal('fp');
         const fhz = parseVal('fhz');
         const ne = parseVal('ne');
@@ -363,7 +372,7 @@
         const fi = parseVal('fi');
         const fc = parseVal('fc');
         const L = parseVal('L');
-        const N = rstar * fp * fhz * ne * fgc_effect * ft * fl * fi * fc * L;
+        const N = rstar * fbin_effect * fp * fhz * ne * fgc_effect * ft * fl * fi * fc * L;
         const res = document.getElementById('resultValue');
         res.innerHTML = `N ≈ ${fmtNumber(N)} <small>civilizations</small>`;
         updateEquationText();
@@ -371,6 +380,7 @@
 
       function setDefaults() {
         $('rstar').value = 1.5;
+        $('fbin').value = 0.55;
         $('fp').value = 0.5;
         $('ne').value = 0.2;
         $('fl').value = 0.33;
