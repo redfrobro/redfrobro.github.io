@@ -215,7 +215,7 @@
       <section class="card" aria-labelledby="eq-title">
         <div class="grid">
           <div class="equation" id="eq-title" aria-live="polite">
-            N = R* × f_p × n_e × f_l × f_i × f_c × L
+            N = R* × f_p × n_e × f_l × f_i × f_c × f_t × f_hz × f_gc × L
           </div>
 
           <div class="row">
@@ -261,6 +261,27 @@
               <p id="hint-fc" class="hint">Proportion that develop detectable communications (0–1).</p>
             </div>
 
+            <div class="field">
+              <label for="ft"><span class="symbol">f_t</span> Fraction with plate tectonics
+                <input type="number" id="ft" min="0" max="1" step="0.01" value="0.6" aria-describedby="hint-ft" />
+              </label>
+              <p id="hint-ft" class="hint">Proportion of habitable planets that have active plate tectonics (0–1).</p>
+            </div>
+
+            <div class="field">
+              <label for="fhz"><span class="symbol">f_hz</span> Fraction in habitable zones
+                <input type="number" id="fhz" min="0" max="1" step="0.01" value="0.25" aria-describedby="hint-fhz" />
+              </label>
+              <p id="hint-fhz" class="hint">Proportion of planets located within their star’s habitable zone (0–1).</p>
+            </div>
+
+            <div class="field">
+              <label for="fgc"><span class="symbol">f_gc</span> Fraction near galactic core
+                <input type="number" id="fgc" min="0" max="1" step="0.01" value="0.1" aria-describedby="hint-fgc" />
+              </label>
+              <p id="hint-fgc" class="hint">Proportion of stellar systems close to the galactic core (0–1).</p>
+            </div>
+
             <div class="field" style="grid-column: span 12;">
               <label for="L"><span class="symbol">L</span> Communicating lifetime (years)
                 <input type="number" id="L" min="0" step="1" value="10000" aria-describedby="hint-L" />
@@ -290,7 +311,7 @@
   <script>
     (function() {
       const $ = (id) => document.getElementById(id);
-      const fields = ['rstar','fp','ne','fl','fi','fc','L'];
+      const fields = ['rstar','fp','ne','fl','fi','fc','ft','fhz','fgc','L'];
 
       function clamp(value, min, max) {
         if (Number.isNaN(value)) return 0;
@@ -308,7 +329,11 @@
           case 'fp':
           case 'fl':
           case 'fi':
-          case 'fc': return clamp(raw, 0, 1);
+          case 'fc':
+          case 'ft':
+          case 'fhz':
+          case 'fgc':
+            return clamp(raw, 0, 1);
           case 'ne': return clamp(raw, 0, undefined);
           default: return 0;
         }
@@ -324,7 +349,7 @@
       }
 
       function updateEquationText() {
-        const eq = `N = ${parseVal('rstar')} × ${parseVal('fp')} × ${parseVal('ne')} × ${parseVal('fl')} × ${parseVal('fi')} × ${parseVal('fc')} × ${parseVal('L')}`;
+        const eq = `N = ${parseVal('rstar')} × ${parseVal('fp')} × ${parseVal('ne')} × ${parseVal('fl')} × ${parseVal('fi')} × ${parseVal('fc')} × ${parseVal('ft')} × ${parseVal('fhz')} × ${parseVal('fgc')} × ${parseVal('L')}`;
         document.querySelector('.equation').textContent = eq;
       }
 
@@ -343,6 +368,9 @@
         $('fl').value = 0.33;
         $('fi').value = 0.01;
         $('fc').value = 0.1;
+        $('ft').value = 0.6;
+        $('fhz').value = 0.25;
+        $('fgc').value = 0.1;
         $('L').value = 10000;
       }
 
